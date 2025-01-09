@@ -18,6 +18,11 @@ minio_url = "https://min.io/resources/img/logo/MINIO_Bird.png"
 minio_icon = "minio.png"
 urlretrieve(minio_url, minio_icon)
 
+# Gin Gonic
+gin_gonic_url = "https://raw.githubusercontent.com/gin-gonic/logo/master/color.png"
+gin_gonic_icon = "gin_gonic.png"
+urlretrieve(gin_gonic_url, gin_gonic_icon)
+
 with Diagram("Balhom Arch", show=True):
 
     # Currency Profiles Cluster
@@ -46,7 +51,7 @@ with Diagram("Balhom Arch", show=True):
     with Cluster("Savings Service"):
         with Cluster("Savings API"):
             savings_api = Server()
-            Spring()
+            Custom("", gin_gonic_icon)
         savings_db = Cassandra("DB")
 
         savings_api >> savings_db
