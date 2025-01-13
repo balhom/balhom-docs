@@ -60,8 +60,10 @@ with Diagram("Balhom Arch", show=True):
         with Cluster("Users API"):
             users_api = Server()
             FastAPI()
+        users_db = Mongodb("DB")
         firebase_auth = Authentication("Firebase Auth")
         
+        users_api >> users_db
         users_api >> firebase_auth
 
     api_gateway = Traefik("Api Gateway")
