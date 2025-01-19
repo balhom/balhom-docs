@@ -8,6 +8,11 @@ from diagrams.custom import Custom
 from diagrams.firebase.develop import Authentication
 from diagrams.programming.framework import Spring, FastAPI
 
+# Supabase
+supabase_url = "https://avatars.githubusercontent.com/u/54469796?s=200&v=4"
+supabase_icon = "supabase.png"
+urlretrieve(supabase_url, supabase_icon)
+
 # Kafka
 kafka_url = "https://svn.apache.org/repos/asf/kafka/site/logos/originals/png/ICON%20-%20Black%20on%20Transparent.png"
 kafka_icon = "kafka.png"
@@ -61,10 +66,10 @@ with Diagram("Balhom Arch", show=True):
             users_api = Server()
             FastAPI()
         users_db = Mongodb("DB")
-        firebase_auth = Authentication("Firebase Auth")
+        supabase_auth = Custom("Supabase Auth", supabase_icon)
         
         users_api >> users_db
-        users_api >> firebase_auth
+        users_api >> supabase_auth
 
     api_gateway = Traefik("Api Gateway")
 
