@@ -8,10 +8,10 @@ from diagrams.custom import Custom
 from diagrams.firebase.develop import Authentication
 from diagrams.programming.framework import Spring, FastAPI
 
-# Supabase
-supabase_url = "https://avatars.githubusercontent.com/u/54469796?s=200&v=4"
-supabase_icon = "supabase.png"
-urlretrieve(supabase_url, supabase_icon)
+# Keycloak
+keycloak_url = "https://upload.wikimedia.org/wikipedia/commons/2/29/Keycloak_Logo.png"
+keycloak_icon = "keycloak.png"
+urlretrieve(keycloak_url, keycloak_icon)
 
 # Kafka
 kafka_url = "https://svn.apache.org/repos/asf/kafka/site/logos/originals/png/ICON%20-%20Black%20on%20Transparent.png"
@@ -32,9 +32,7 @@ with Diagram("Balhom Arch", show=True):
 
     # Currency Profiles Cluster
     with Cluster("Currency Profiles Service"):
-        with Cluster("Currency Profiles API"):
-            currency_profiles_api = Server()
-            Spring()
+        currency_profiles_api = Spring("Currency Profiles API")
         currency_profiles_db = Mongodb("DB")
         currency_profiles_object_storage = Custom("Object Storage", minio_icon)
 
@@ -43,9 +41,7 @@ with Diagram("Balhom Arch", show=True):
 
     # Transactions Cluster
     with Cluster("Transactions Service"):
-        with Cluster("Transactions API"):
-            transactions_api = Server()
-            Spring()
+        transactions_api = Spring("Transactions API")
         transactions_db = Postgresql("DB")
         transactions_object_storage = Custom("Object Storage", minio_icon)
 
@@ -54,27 +50,22 @@ with Diagram("Balhom Arch", show=True):
 
     # Savings Cluster
     with Cluster("Savings Service"):
-        with Cluster("Savings API"):
-            savings_api = Server()
-            Custom("", gin_gonic_icon)
+        savings_api = Custom("Savings API", gin_gonic_icon)
         savings_db = Cassandra("DB")
 
         savings_api >> savings_db
 
-    with Cluster():
-        with Cluster("Users API"):
-            users_api = Server()
-            FastAPI()
+    with Cluster("Users Service"):
+        users_api = FastAPI("Users API")
         users_db = Mongodb("DB")
-        supabase_auth = Custom("Supabase Auth", supabase_icon)
-        
+        keycloak_auth = Custom("Keycloak Auth", keycloak_icon)
+
         users_api >> users_db
-        users_api >> supabase_auth
+        users_api >> keycloak_auth
 
     api_gateway = Traefik("Api Gateway")
 
     kafka = Custom("Kafka", kafka_icon)
-
 
     api_gateway >> users_api
     api_gateway >> currency_profiles_api
