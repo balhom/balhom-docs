@@ -48,12 +48,12 @@ with Diagram("Balhom Arch", show=True):
         transactions_api >> transactions_db
         transactions_api >> transactions_object_storage
 
-    # Savings Cluster
-    with Cluster("Savings Service"):
-        savings_api = Custom("Savings API", gin_gonic_icon)
-        savings_db = Cassandra("DB")
+    # Statistics Cluster
+    with Cluster("Statistics Service"):
+        statistics_api = Custom("Statistics API", gin_gonic_icon)
+        statistics_db = Cassandra("DB")
 
-        savings_api >> savings_db
+        statistics_api >> statistics_db
 
     with Cluster("Users Service"):
         users_api = FastAPI("Users API")
@@ -70,12 +70,12 @@ with Diagram("Balhom Arch", show=True):
     api_gateway >> users_api
     api_gateway >> currency_profiles_api
     api_gateway >> transactions_api
-    api_gateway >> savings_api
+    api_gateway >> statistics_api
 
     transactions_api >> kafka
     kafka >> currency_profiles_api
-    kafka >> savings_api
+    kafka >> statistics_api
 
     currency_profiles_api >> users_api
     transactions_api >> currency_profiles_api
-    savings_api >> currency_profiles_api
+    statistics_api >> currency_profiles_api
