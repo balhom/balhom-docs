@@ -3,10 +3,8 @@ from urllib.request import urlretrieve
 from diagrams import Cluster, Diagram
 from diagrams.onprem.database import Postgresql, Cassandra, Mongodb
 from diagrams.onprem.network import Traefik
-from diagrams.onprem.compute import Server
 from diagrams.custom import Custom
-from diagrams.firebase.develop import Authentication
-from diagrams.programming.framework import Spring, FastAPI
+from diagrams.programming.framework import Spring, Quarkus
 
 # Keycloak
 keycloak_url = "https://upload.wikimedia.org/wikipedia/commons/2/29/Keycloak_Logo.png"
@@ -19,7 +17,7 @@ kafka_icon = "kafka.png"
 urlretrieve(kafka_url, kafka_icon)
 
 # MinIO
-minio_url = "https://min.io/resources/img/logo/MINIO_Bird.png"
+minio_url = "https://avatars.githubusercontent.com/u/695951?s=200&v=4"
 minio_icon = "minio.png"
 urlretrieve(minio_url, minio_icon)
 
@@ -32,7 +30,7 @@ with Diagram("Balhom Arch", show=True):
 
     # Currency Profiles Cluster
     with Cluster("Currency Profiles Service"):
-        currency_profiles_api = Spring("Currency Profiles API")
+        currency_profiles_api = Quarkus("Currency Profiles API")
         currency_profiles_db = Mongodb("DB")
         currency_profiles_object_storage = Custom("Object Storage", minio_icon)
 
@@ -55,19 +53,13 @@ with Diagram("Balhom Arch", show=True):
 
         statistics_api >> statistics_db
 
-    with Cluster("Users Service"):
-        users_api = FastAPI("Users API")
-        users_db = Mongodb("DB")
-        keycloak_auth = Custom("Keycloak Auth", keycloak_icon)
-
-        users_api >> users_db
-        users_api >> keycloak_auth
+    keycloak_auth = Custom("Keycloak Auth", keycloak_icon)
 
     api_gateway = Traefik("Api Gateway")
 
     kafka = Custom("Kafka", kafka_icon)
 
-    api_gateway >> users_api
+    api_gateway >> keycloak_auth
     api_gateway >> currency_profiles_api
     api_gateway >> transactions_api
     api_gateway >> statistics_api
@@ -76,6 +68,6 @@ with Diagram("Balhom Arch", show=True):
     kafka >> currency_profiles_api
     kafka >> statistics_api
 
-    currency_profiles_api >> users_api
+    currency_profiles_api >> keycloak_auth
     transactions_api >> currency_profiles_api
     statistics_api >> currency_profiles_api
