@@ -22,7 +22,7 @@ minio_icon = "minio.png"
 urlretrieve(minio_url, minio_icon)
 
 # Gin Gonic
-gin_gonic_url = "https://raw.githubusercontent.com/gin-gonic/logo/master/color.png"
+gin_gonic_url = "https://avatars.githubusercontent.com/u/7894478?s=200&v=4"
 gin_gonic_icon = "gin_gonic.png"
 urlretrieve(gin_gonic_url, gin_gonic_icon)
 
