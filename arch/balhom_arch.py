@@ -30,11 +30,9 @@ with Diagram("Balhom Arch", show=True):
         currency_profiles_api = Quarkus("Currency Profiles API")
         currency_profiles_db = Mongodb("DB")
         currency_profiles_object_storage = Custom("Object Storage", minio_icon)
-        currency_profiles_vault = Vault("Vault")
-
+        
         currency_profiles_api >> currency_profiles_db
         currency_profiles_api >> currency_profiles_object_storage
-        currency_profiles_api >> currency_profiles_vault
 
     # Transactions Cluster
     with Cluster("Transactions Service"):
@@ -51,10 +49,8 @@ with Diagram("Balhom Arch", show=True):
     with Cluster("Statistics Service"):
         statistics_api = Custom("Statistics API", gin_gonic_icon)
         statistics_db = Cassandra("DB")
-        statistics_vault = Vault("Vault")
 
         statistics_api >> statistics_db
-        statistics_api >> statistics_vault
 
     keycloak_auth = Custom("Keycloak Auth", keycloak_icon)
 
