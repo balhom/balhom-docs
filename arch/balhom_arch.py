@@ -30,7 +30,7 @@ with Diagram("Balhom Arch", show=True):
         currency_profiles_api = Quarkus("Currency Profiles API")
         currency_profiles_db = Mongodb("DB")
         currency_profiles_object_storage = Custom("Object Storage", minio_icon)
-        
+
         currency_profiles_api >> currency_profiles_db
         currency_profiles_api >> currency_profiles_object_storage
 
@@ -56,16 +56,22 @@ with Diagram("Balhom Arch", show=True):
 
     api_gateway = Traefik("Api Gateway")
 
-    kafka = Kafka("")
+    transactions_kafka = Kafka("Transactions Topic")
+
+    currency_profiles_kafka = Kafka("Currency Profiles Topic")
 
     api_gateway >> keycloak_auth
     api_gateway >> currency_profiles_api
     api_gateway >> transactions_api
     api_gateway >> statistics_api
 
-    transactions_api >> kafka
-    kafka >> currency_profiles_api
-    kafka >> statistics_api
+    transactions_api >> transactions_kafka
+    transactions_kafka >> currency_profiles_api
+    transactions_kafka >> statistics_api
+
+    currency_profiles_api >> currency_profiles_kafka
+    currency_profiles_kafka >> transactions_api
+    currency_profiles_kafka >> statistics_api
 
     transactions_api >> keycloak_auth
     statistics_api >> keycloak_auth
