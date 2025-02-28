@@ -39,6 +39,7 @@ with Diagram("Balhom Arch", show=True):
         transactions_api >> transactions_db
         transactions_api >> transactions_object_storage
         transactions_api >> transactions_vault
+        transactions_api >> currency_profiles_api
 
     # Statistics Cluster
     with Cluster("Statistics Service"):
