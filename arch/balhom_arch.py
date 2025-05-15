@@ -1,7 +1,7 @@
 from urllib.request import urlretrieve
 
 from diagrams import Cluster, Diagram
-from diagrams.onprem.database import Postgresql, Cassandra, Mongodb
+from diagrams.onprem.database import Postgresql, Mongodb
 from diagrams.onprem.network import Traefik
 from diagrams.onprem.queue import Kafka
 from diagrams.onprem.security import Vault
@@ -44,7 +44,7 @@ with Diagram("Balhom Arch", show=True):
     # Statistics Cluster
     with Cluster("Statistics Service"):
         statistics_api = Quarkus("Statistics API")
-        statistics_db = Cassandra("DB")
+        statistics_db = Mongodb("DB")
 
         statistics_api >> statistics_db
 
